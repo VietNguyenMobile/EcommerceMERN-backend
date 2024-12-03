@@ -5,12 +5,12 @@ const routes = require("./routes");
 const bodyParser = require("body-parser");
 
 dotenv.config();
-console.log(process.env.PORT);
-console.log(process.env.MONGODB_URI);
-
 const app = express();
 const port = process.env.PORT || 3001;
+
+// Middleware
 app.use(bodyParser.json());
+
 routes(app);
 
 mongoose
