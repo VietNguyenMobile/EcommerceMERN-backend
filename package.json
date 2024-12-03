@@ -1,0 +1,19 @@
+{
+  "name": "ecommerce-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VietNguyenMobile/EcommerceMERN-backend.git"
+  },
+  "author": "VietNguyenMobile",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VietNguyenMobile/EcommerceMERN-backend/issues"
+  },
+  "homepage": "https://github.com/VietNguyenMobile/EcommerceMERN-backend#readme"
+}
