@@ -66,8 +66,60 @@ const updateUser = async (req, res) => {
   }
 };
 
+const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({
+        error: "Missing the userId in required fields",
+        status: "ERROR",
+      });
+    }
+    const dataResponse = await UserService.deleteUser(id);
+ 
+    return res.status(200).json(dataResponse);
+  } catch (error) {
+    console.log(error);
+    return res.status(404).json({ error: error.message });
+  }
+};
+
+const getAllUser = async (req, res) => {
+  try {
+    const dataResponse = await UserService.getAllUser();
+ 
+    return res.status(200).json(dataResponse);
+  } catch (error) {
+    console.log(error);
+    return res.status(404).json({ error: error.message });
+  }
+};
+
+const getDetailsUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+
+    if (!id) {
+      return res.status(400).json({
+        error: "Missing the userId in required fields",
+        status: "ERROR",
+      });
+    }
+    const dataResponse = await UserService.getDetailsUser(id);
+
+    return res.status(200).json(dataResponse);
+  } catch (error) {
+    console.log(error);
+    return res.status(404).json({ error: error.message });
+  }
+};
 module.exports = {
   createUser,
   loginUser,
   updateUser,
+  deleteUser,
+  getAllUser,
+  getDetailsUser,
 };
