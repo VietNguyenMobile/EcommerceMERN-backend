@@ -1,4 +1,5 @@
 const UserService = require("../services/UserService");
+const JwtService = require("../services/JwtService");
 
 const createUser = async (req, res) => {
   try {
@@ -77,7 +78,7 @@ const deleteUser = async (req, res) => {
       });
     }
     const dataResponse = await UserService.deleteUser(id);
- 
+
     return res.status(200).json(dataResponse);
   } catch (error) {
     console.log(error);
@@ -88,7 +89,7 @@ const deleteUser = async (req, res) => {
 const getAllUser = async (req, res) => {
   try {
     const dataResponse = await UserService.getAllUser();
- 
+
     return res.status(200).json(dataResponse);
   } catch (error) {
     console.log(error);
@@ -99,7 +100,6 @@ const getAllUser = async (req, res) => {
 const getDetailsUser = async (req, res) => {
   try {
     const { id } = req.params;
-
 
     if (!id) {
       return res.status(400).json({
@@ -115,6 +115,25 @@ const getDetailsUser = async (req, res) => {
     return res.status(404).json({ error: error.message });
   }
 };
+
+const refreshToken = async (req, res) => {
+  try {
+    const token = req.headers?.authorization?.split(" ")[1];
+ 
+    if (!token) {
+      return res.status(400).json({
+        error: "The token is required",
+        status: "ERROR",
+      });
+    }
+    const dataResponse = await JwtService.refreshToken(token);
+    return res.status(200).json(dataResponse);
+  } catch (error) {
+    console.log(error);
+    return res.status(404).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createUser,
   loginUser,
@@ -122,4 +141,5 @@ module.exports = {
   deleteUser,
   getAllUser,
   getDetailsUser,
+  refreshToken,
 };

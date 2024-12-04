@@ -18,7 +18,26 @@ const generateRefreshToken = async (payload) => {
   return refresh_token;
 };
 
+const refreshToken = async (token) => {
+  // const refresh_token = jwt.sign({ token }, process.env.JWT_SECRET_REFRESH, {
+  //   expiresIn: "2h",
+  // });
+  // return refresh_token;
+  return new Promise( async(resolve, reject) => {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET_REFRESH);
+    
+      const access_token = await generateAccessToken(decoded.payload);
+   
+      return resolve({ status: "OK", message: "SUCCESS", access_token });
+    } catch (error) {
+      return reject(error);
+    }
+  });
+};
+
 module.exports = {
   generateAccessToken,
   generateRefreshToken,
+  refreshToken,
 };
