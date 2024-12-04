@@ -48,7 +48,26 @@ const loginUser = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = req.body;
+    if (!id) {
+      return res.status(400).json({
+        error: "Missing the userId in required fields",
+        status: "ERROR",
+      });
+    }
+    const dataResponse = await UserService.updateUser(id, req.body);
+    return res.status(200).json(dataResponse);
+  } catch (error) {
+    console.log(error);
+    return res.status(404).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createUser,
   loginUser,
+  updateUser,
 };

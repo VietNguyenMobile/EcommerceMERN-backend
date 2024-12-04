@@ -1,6 +1,6 @@
 const User = require("../models/UserModel");
 const bcrypt = require("bcryptjs");
-const { generateAccessToken } = require("./JwtService");
+const { generateAccessToken, generateRefreshToken } = require("./JwtService");
 
 const createUser = (newUser) => {
   return new Promise(async (resolve, reject) => {
@@ -62,7 +62,25 @@ const loginUser = (userData) => {
   });
 };
 
+const updateUser = (id, data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const checkUser = await User.findOne({
+        _id: id,
+      });
+      if (checkUser === null) {
+        return reject({ message: "User not found" });
+      }
+      const updatedUser = await User.findByIdAndUpdate(id, data, { new: true });
+      return resolve({ status: "OK", message: "SUCCESS", data: updatedUser });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 module.exports = {
   createUser,
   loginUser,
+  updateUser,
 };
