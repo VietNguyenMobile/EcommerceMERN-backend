@@ -124,6 +124,7 @@ const getDetailsUser = (id) => {
 
       return resolve({ status: "OK", message: "SUCCESS", data: checkUser });
     } catch (error) {
+      console.log("error service: ", error);
       reject(error);
     }
   });
