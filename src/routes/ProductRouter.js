@@ -13,7 +13,7 @@ router.post("/create-product", createProduct);
 router.put("/update-product/:id", authMiddleware, updateProduct);
 router.get("/get-details/:id", getDetailsProduct);
 router.delete("/delete-product/:id", authMiddleware, deleteProduct);
-router.get("/getAll", authMiddleware, getAllProduct);
+router.get("/get-all", authMiddleware, getAllProduct);
 
 
 module.exports = router;
