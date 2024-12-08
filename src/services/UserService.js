@@ -8,7 +8,7 @@ const createUser = (newUser) => {
     try {
       const checkUer = await User.findOne({ email });
       if (checkUer) {
-        return reject({ message: "Email already exists" });
+        resolve({ status: "ERROR", message: "Email already exists" });
       }
       const salt = await bcrypt.genSalt(10);
       const hashPassword = await bcrypt.hashSync(password, salt);
@@ -19,7 +19,7 @@ const createUser = (newUser) => {
         phone,
       });
       if (createUser) {
-        return resolve({ status: "OK", message: "SUCCESS", data: createUser });
+        resolve({ status: "OK", message: "SUCCESS", data: createUser });
       }
     } catch (error) {
       reject(error);
@@ -29,17 +29,17 @@ const createUser = (newUser) => {
 
 const loginUser = (userData) => {
   return new Promise(async (resolve, reject) => {
-    const { name, email, password, phone } = userData;
+    const { email, password } = userData;
     try {
       const checkUer = await User.findOne({ email });
       if (checkUer === null) {
-        return reject({ message: "Email does not exist" });
+        resolve({ message: "Email does not exist" });
       }
       const salt = await bcrypt.genSalt(10);
       const hashPassword = await bcrypt.hashSync(password, salt);
       const comparePassword = await bcrypt.compare(password, checkUer.password);
       if (!comparePassword) {
-        return reject({ message: "Password is incorrect" });
+        resolve({ message: "Password is incorrect" });
       }
       const access_token = await generateAccessToken({
         id: checkUer._id,
@@ -50,7 +50,7 @@ const loginUser = (userData) => {
         isAdmin: checkUer.isAdmin,
       });
 
-      return resolve({
+      resolve({
         status: "OK",
         message: "SUCCESS",
         access_token,
@@ -69,10 +69,10 @@ const updateUser = (id, data) => {
         _id: id,
       });
       if (checkUser === null) {
-        return reject({ message: "User not found" });
+        resolve({ message: "User not found" });
       }
       const updatedUser = await User.findByIdAndUpdate(id, data, { new: true });
-      return resolve({ status: "OK", message: "SUCCESS", data: updatedUser });
+      resolve({ status: "OK", message: "SUCCESS", data: updatedUser });
     } catch (error) {
       reject(error);
     }
@@ -86,10 +86,10 @@ const deleteUser = (id) => {
         _id: id,
       });
       if (checkUser === null) {
-        return reject({ message: "User not found" });
+        resolve({ message: "User not found" });
       }
       await User.findByIdAndDelete(id);
-      return resolve({ status: "OK", message: "Delete user success" });
+      resolve({ status: "OK", message: "Delete user success" });
     } catch (error) {
       reject(error);
     }

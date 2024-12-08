@@ -1,5 +1,6 @@
 const express = require("express");
 require("express-async-errors");
+const cors = require("cors");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const routes = require("./routes");
@@ -24,6 +25,7 @@ function errorHandler(err, req, res, next) {
 }
 // Middleware
 app.use(bodyParser.json());
+app.use(cors()); // tránh truy cập từ các domain khác
 // app.use(logErrors);
 // app.use(errorHandler);
 app.use((err, req, res, next) => {

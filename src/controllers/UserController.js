@@ -10,7 +10,7 @@ const createUser = async (req, res) => {
     const isCheckEmail = emailRegex.test(email);
     console.log("isCheckEmail", isCheckEmail);
 
-    if (!name || !email || !password || !confirmPassword || !phone) {
+    if (!email || !password || !confirmPassword) {
       return res.status(400).json({ error: "Missing required fields" });
     } else if (!isCheckEmail) {
       return res.status(400).json({ error: "Email is invalid" });
@@ -29,14 +29,14 @@ const createUser = async (req, res) => {
 };
 const loginUser = async (req, res) => {
   try {
-    console.log(req.body);
-    const { name, email, password, phone } = req.body;
+    console.log("loginUser req.body: ", req.body);
+    const { email, password } = req.body;
 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const isCheckEmail = emailRegex.test(email);
     console.log("isCheckEmail", isCheckEmail);
 
-    if (!name || !email || !password || !phone) {
+    if (!email || !password) {
       return res.status(400).json({ error: "Missing required fields" });
     } else if (!isCheckEmail) {
       return res.status(400).json({ error: "Email is invalid" });
