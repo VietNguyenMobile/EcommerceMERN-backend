@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const routes = require("./routes");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 
 dotenv.config();
 const app = express();
@@ -25,6 +26,7 @@ function errorHandler(err, req, res, next) {
 }
 // Middleware
 app.use(bodyParser.json());
+app.use(cookieParser());
 app.use(cors()); // tránh truy cập từ các domain khác
 // app.use(logErrors);
 // app.use(errorHandler);

@@ -13,7 +13,7 @@ const authMiddleware = (req, res, next) => {
 
     req.user = decoded;
 
-    if (decoded?.payload?.isAdmin) {
+    if (decoded?.isAdmin) {
       next();
     } else {
       return res.status(401).json({ error: "Unauthorized 111" });
@@ -25,17 +25,24 @@ const authMiddleware = (req, res, next) => {
 };
 
 const authUserMiddleware = (req, res, next) => {
+
+  console.log("req?.headers: ", req?.headers);  
+
   const token = req?.headers["authorization"]?.split(" ")[1];
+  console.log("token: ", token);
   const userId = req?.params?.id;
+  console.log("userId: ", userId);
   if (!token) {
     return res.status(401).json({ error: "Unauthorized" });
   }
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
+    console.log("decoded: ", decoded);
+
     req.user = decoded;
 
-    if (decoded?.payload?.isAdmin || decoded?.payload?.id === userId) {
+    if (decoded?.isAdmin || decoded?.id === userId) {
       next();
     } else {
       return res.status(401).json({ error: "Unauthorized 111" });

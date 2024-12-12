@@ -33,13 +33,13 @@ const loginUser = (userData) => {
     try {
       const checkUer = await User.findOne({ email });
       if (checkUer === null) {
-        resolve({ message: "Email does not exist" });
+        resolve({ message: "Email does not exist", success: false });
       }
       const salt = await bcrypt.genSalt(10);
       const hashPassword = await bcrypt.hashSync(password, salt);
       const comparePassword = await bcrypt.compare(password, checkUer.password);
       if (!comparePassword) {
-        resolve({ message: "Password is incorrect" });
+        resolve({ message: "Password is incorrect", success: false });
       }
       const access_token = await generateAccessToken({
         id: checkUer._id,
@@ -54,7 +54,8 @@ const loginUser = (userData) => {
         status: "OK",
         message: "SUCCESS",
         access_token,
-        refresh_token,
+        // refresh_token,
+        success: true,
       });
     } catch (error) {
       reject(error);

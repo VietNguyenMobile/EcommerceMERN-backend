@@ -42,6 +42,11 @@ const loginUser = async (req, res) => {
       return res.status(400).json({ error: "Email is invalid" });
     }
     const data = await UserService.loginUser(req.body);
+    const { access_token, refresh_token } = data;
+    res.cookie("refresh_token", refresh_token, {
+      httpOnly: true,
+      secure: true,
+    });
     return res.status(200).json(data);
   } catch (error) {
     console.log(error);
@@ -118,7 +123,8 @@ const getDetailsUser = async (req, res) => {
 
 const refreshToken = async (req, res) => {
   try {
-    const token = req.headers?.authorization?.split(" ")[1];
+    // const token = req.headers?.authorization?.split(" ")[1];
+    const token = req.cookies.refresh_token;
 
     if (!token) {
       return res.status(400).json({
