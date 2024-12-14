@@ -54,7 +54,7 @@ const loginUser = (userData) => {
         status: "OK",
         message: "SUCCESS",
         access_token,
-        // refresh_token,
+        refresh_token,
         success: true,
       });
     } catch (error) {

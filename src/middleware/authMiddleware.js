@@ -26,9 +26,14 @@ const authMiddleware = (req, res, next) => {
 
 const authUserMiddleware = (req, res, next) => {
 
-  console.log("req?.headers: ", req?.headers);  
+  console.log("authUserMiddleware req?.headers: ", req?.headers);  
 
   const token = req?.headers["authorization"]?.split(" ")[1];
+
+  const token2 = req?.headers?.token?.split(" ")[1]; 
+
+  console.log("token2: ", token2);
+
   console.log("token: ", token);
   const userId = req?.params?.id;
   console.log("userId: ", userId);

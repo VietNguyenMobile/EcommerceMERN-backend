@@ -42,12 +42,13 @@ const loginUser = async (req, res) => {
       return res.status(400).json({ error: "Email is invalid" });
     }
     const data = await UserService.loginUser(req.body);
-    const { access_token, refresh_token } = data;
+    const { refresh_token, ...newResponse } = data;
     res.cookie("refresh_token", refresh_token, {
       httpOnly: true,
-      secure: true,
+      secure: false,
+      sameSite: "none",
     });
-    return res.status(200).json(data);
+    return res.status(200).json(newResponse);
   } catch (error) {
     console.log(error);
     return res.status(404).json({ error: error.message });
@@ -123,7 +124,13 @@ const getDetailsUser = async (req, res) => {
 
 const refreshToken = async (req, res) => {
   try {
+    // console.log("req.cookie: ", JSON.stringify(req.cookie));
+    // console.log("req.headers: ", JSON.stringify(req.headers));
+    console.log("refreshToken req?.headers: ", req?.headers);
+    // console.log("req.cookie.refresh_token: ", req.cookie?.refresh_token);
+    console.log("refreshToken req.cookies: ", req.cookies);
     // const token = req.headers?.authorization?.split(" ")[1];
+
     const token = req.cookies.refresh_token;
 
     if (!token) {
@@ -132,8 +139,20 @@ const refreshToken = async (req, res) => {
         status: "ERROR",
       });
     }
-    const dataResponse = await JwtService.refreshToken(token);
+    const dataResponse = await JwtService.refreshTokenJwtService(token);
     return res.status(200).json(dataResponse);
+  } catch (error) {
+    console.log(error);
+    return res.status(404).json({ error: error.message });
+  }
+};
+
+const userLogout = async (req, res) => {
+  try {
+    res.clearCookie("refresh_token");
+    return res.status(200).json({
+      message: "Logout successfully",
+    });
   } catch (error) {
     console.log(error);
     return res.status(404).json({ error: error.message });
@@ -148,4 +167,5 @@ module.exports = {
   getAllUser,
   getDetailsUser,
   refreshToken,
+  userLogout,
 };
